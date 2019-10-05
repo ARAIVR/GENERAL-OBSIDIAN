@@ -66,7 +66,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		}
 	}
 	//call the gameobject pointer  dereference operator
-	player = new GameObject("assets/labrish1.png",0,0);
+	player = new GameObject("assets/obsidian.png",0,0);
 	enemy = new GameObject("assets/monster1.png",64,64);
 	//background = new GameObject("assets/bg.png", renderer);
 	map = new Map();

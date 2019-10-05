@@ -2,13 +2,19 @@
 #include "TextureManager.h"
 
 const int JOYSTICK_DEAD_ZONE = 8000;
+const int FPS = 30;
+int frametime = 0;
 //game object implementation
 
 #define MAX_CONTROLLERS 4
 SDL_GameController *ControllerHandles[MAX_CONTROLLERS];
+int texturewidth, textureheight;
+int framewidth, frameheight;
+int frame, sheet;
+SDL_Rect playerRect;
 GameObject::GameObject(const char* texturesheet, int x, int y)
 {
-	
+
 	objTexture = TextureManager::LoadTexture(texturesheet);
 
 	xpos = x;
@@ -20,7 +26,7 @@ GameObject::GameObject(const char* texturesheet, int x, int y)
 void GameObject::Update()
 {
 	//The position of the object called every frame like Unity
-	
+
 	//SDL_GameController *controller = nullptr;
 	////xpos++;
 	////ypos++;
@@ -40,6 +46,9 @@ void GameObject::Update()
 	//{
 
 	//}
+
+
+
 	int MaxJoysticks = SDL_NumJoysticks();
 	int ControllerIndex = 0;
 	for (int JoystickIndex = 0; JoystickIndex < MaxJoysticks; ++JoystickIndex)
@@ -95,12 +104,12 @@ void GameObject::Update()
 	}
 
 
-	
+
 	//Event handler
 	SDL_Event e;
 	bool quit;
-	int xDir=0;
-	int yDir=0;
+	int xDir = 0;
+	int yDir = 0;
 
 
 	while (SDL_PollEvent(&e) != 0)
@@ -110,6 +119,13 @@ void GameObject::Update()
 		{
 			quit = true;
 		}
+
+
+
+
+
+
+
 		else if (e.type == SDL_JOYAXISMOTION)
 		{
 			//Motion on controller 0
@@ -124,8 +140,8 @@ void GameObject::Update()
 						xDir = -1;
 						xDir < 0;
 						xpos -= 45;
-						
-						
+
+
 
 					}
 					//Right of dead zone
@@ -133,10 +149,10 @@ void GameObject::Update()
 					{
 						//xDir = 1;
 						xDir > 0;
-						
+
 						xpos += 45;
-							
-						
+
+
 					}
 					else
 					{
@@ -172,18 +188,75 @@ void GameObject::Update()
 
 
 
-	
 
 
-	srcRect.h = 64;
-	srcRect.w = 64;
-	srcRect.x = 0;
-	srcRect.y = 0;
+
+	srcRect.h = 32;
+	srcRect.w = 32;
+
+
+
+	frametime++;
+	if (FPS / frametime == 4)
+
+	{
+		frametime = 0;
+		std::cout << "obsidian" << std::endl;
+		//this controls the movement across the sprite sheet
+
+
+
+
+
+	}
+
+	switch (frametime) {
+	case 0:
+
+		srcRect.x = 0;
+		srcRect.y = 0;
+		break;
+
+
+	case 1:
+
+		srcRect.x = 32;
+		srcRect.y = 0;
+		break;
+	case 2:
+
+		srcRect.x = 64;
+		srcRect.y = 0;
+		break;
+
+	default: // compilation error: jump to default: would enter the scope of 'x'
+			 // without initializing it
+		std::cout << "default\n";
+		break;
+	}
+
+
+
+
+
+
 
 	destRect.x = xpos;
 	destRect.y = ypos;
-	destRect.w = srcRect.w * 2;
-	destRect.h = srcRect.h * 2;
+	destRect.w = srcRect.w;
+	destRect.h = srcRect.h;
+
+
+
+
+	/*framewidth = texturewidth / 3;
+	frameheight = textureheight / 4;
+
+	playerRect.x = playerRect.y = 0;
+	playerRect.w = framewidth;
+	playerRect.h = frameheight;*/
+
+
 
 	//std::cout << xDir << std::endl;
 
@@ -194,5 +267,12 @@ void GameObject::Render()
 {
 	//&srcRect and &destRect called by reference
 	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
+	//Obtain this data of the game object for animating a spritesheet
+	SDL_QueryTexture(objTexture, NULL, NULL, &frame, &sheet);
+	//SDL_RenderCopy(Game::renderer, objTexture,&playerRect,NULL);
+
+
+
+
 
 }
