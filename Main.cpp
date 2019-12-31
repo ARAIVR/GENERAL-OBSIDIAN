@@ -1,15 +1,22 @@
 #include <iostream>
+
+#define SDL_MAIN_HANDLED
 #include <SDL.h>
-#include <SDL_gamecontroller.h>
+#include <SDL_mixer.h>
+//#include <SDL_gamecontroller.h>
 //Here we can now add our Game Class which will make all the c
 #include "Game.h"
-
+#include <SDL_ttf.h>
+#include "Particles.h"
+//Code based on Youtube Tutorial https://www.youtube.com/watch?v=QQzAHcojEKg&list=PLhfAbcv9cehhkG7ZQK0nfIGJC_C-wSLrx
 //add instance of game as a pointer for use with the Class member Access operator ->
 Game *game = nullptr;
+
 //SDL_GameController *controller = nullptr;
+
 int main(int argc, char *argv[])
 {
-	//THE GAME LOOP
+	//THE GAME LOOP5
 	//while (game is running)
 	//{
 
@@ -20,8 +27,13 @@ int main(int argc, char *argv[])
 	//}
 
 	//Controlling frame rate
-	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
-
+	SDL_Init(SDL_INIT_EVERYTHING);
+	//Initialize SDL_mixer
+	
+	/*TTF_Init;
+	IMG_Init;*/
+	
+	
 	
 	SDL_GameController *controller = nullptr;
 
@@ -34,7 +46,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	
-
+	
 
 
 
@@ -44,20 +56,25 @@ int main(int argc, char *argv[])
 	Uint32 frameStart;
 	int frameTime;
 
-
+	
 	//Declare our game pointer
 	game = new Game();
 	//ALT+F4 to quit
 
 	//A class member operator -> is used. If used its return type must be a pointer or an onject of a class
 	//to which you can apply
-
+	
 
 	game->init("ARAIVR SYSTEMS ENGINE", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, 800, 640, false );
 	//This is where we can add the Game Loop
 	while (game->running())
 	{
 		frameStart = SDL_GetTicks();
+		
+
+		
+
+
 
 
 		game->handleEvents();
